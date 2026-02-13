@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart AI Report</title>
+    <style>
+        body { font-family: Arial; background:#eef2f7; padding:30px;}
+        .card { background:white; padding:25px; border-radius:10px; max-width:900px; margin:auto;}
+        button { padding:10px 20px; background:#4CAF50; color:white; border:none; border-radius:5px;}
+        .accordion { margin-top:15px; cursor:pointer; padding:12px; background:#ddd; border-radius:5px;}
+        .panel { display:none; padding:10px; background:#f9f9f9; border-radius:5px;}
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>📘 Smart AI Report</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br><br>
+        <button type="submit">Upload & Analyze</button>
+    </form>
+
+    {% if title %}
+        <h2>{{ title }}</h2>
+
+        <div class="accordion">Summary</div>
+        <div class="panel"><p>{{ summary }}</p></div>
+
+        <div class="accordion">Key Points</div>
+        <div class="panel">
+            <ul>
+            {% for point in key_points %}
+                <li>{{ point }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div class="accordion">Details</div>
+        <div class="panel">
+            {% for d in details %}
+                <p>{{ d }}</p>
+            {% endfor %}
+        </div>
+
+        {% if chart %}
+        <div class="accordion">Auto Chart</div>
+        <div class="panel">
+            <img src="data:image/png;base64,{{ chart }}" width="100%">
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<script>
+var acc=document.getElementsByClassName("accordion");
+for(var i=0;i<acc.length;i++){
+  acc[i].addEventListener("click",function(){
+    var panel=this.nextElementSibling;
+    panel.style.display=panel.style.display==="block"?"none":"block";
+  });
+}
+</script>
+
+</body>
+</html>
