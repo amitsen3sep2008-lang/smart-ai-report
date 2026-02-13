@@ -52,6 +52,62 @@
     {% endif %}
 </div>
 
+   {% if vacancy_data %}
+<hr>
+<h2>Zone Wise Vacancy</h2>
+
+<label>Select Zone:</label>
+<select id="zoneSelect" onchange="loadCategories()">
+    <option value="">Select Zone</option>
+    {% for zone in vacancy_data %}
+        <option value="{{ zone }}">{{ zone }}</option>
+    {% endfor %}
+</select>
+
+<br><br>
+
+<label>Select Category:</label>
+<select id="categorySelect" onchange="loadPosts()">
+    <option value="">Select Category</option>
+</select>
+
+<br><br>
+
+<div id="result"></div>
+
+<script>
+let vacancyData = {{ vacancy_data | tojson }};
+
+function loadCategories() {
+    let zone = document.getElementById("zoneSelect").value;
+    let categorySelect = document.getElementById("categorySelect");
+    categorySelect.innerHTML = "<option>Select Category</option>";
+
+    if(zone) {
+        let categories = Object.keys(vacancyData[zone]);
+        categories.forEach(cat => {
+            categorySelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
+    }
+}
+
+function loadPosts() {
+    let zone = document.getElementById("zoneSelect").value;
+    let category = document.getElementById("categorySelect").value;
+    let resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
+
+    if(zone && category) {
+        let posts = vacancyData[zone][category];
+        for(let post in posts) {
+            resultDiv.innerHTML += `<p><b>${post}</b> : ${posts[post]}</p>`;
+        }
+    }
+}
+</script>
+{% endif %}
+ 
+
 <script>
 var acc=document.getElementsByClassName("accordion");
 for(var i=0;i<acc.length;i++){
